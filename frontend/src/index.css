@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  /* Definimos tus colores de marca aquí */
+  --color-experiencia-yellow: #FFD700;
+  --color-experiencia-dark: #1A1A1A;
+}
+
+/* Esto reemplaza el @apply que falló antes */
+body {
+  background-color: var(--color-experiencia-dark);
+  color: white;
+  font-family: sans-serif;
+}
