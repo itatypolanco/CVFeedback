@@ -4,6 +4,9 @@ from io import BytesIO
 import unicodedata
 from urllib.parse import urlparse, parse_qs
 import textwrap
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
 
 import fitz  # PyMuPDF
 import pandas as pd
@@ -31,16 +34,21 @@ client = OpenAI(api_key=api_key)
 # 3. Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5174",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Servir frontend
+frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+
+@app.get("/")
+def serve_frontend():
+    return FileResponse(os.path.join(frontend_dist, "index.html"))
+
+app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="static")
+
 
 SHEET_URL = os.getenv("GOOGLE_SHEET_CSV_URL", "")
 ANALYSIS_CACHE = {}
