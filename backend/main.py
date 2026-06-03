@@ -41,7 +41,7 @@ app.add_middleware(
 )
 
 # Servir frontend
-frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+frontend_dist = os.path.join(os.path.dirname(__file__), "dist")
 
 @app.get("/")
 def serve_frontend():
