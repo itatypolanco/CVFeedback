@@ -40,15 +40,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Servir frontend
 frontend_dist = os.path.join(os.path.dirname(__file__), "dist")
-
-@app.get("/")
-def serve_frontend():
-    return FileResponse(os.path.join(frontend_dist, "index.html"))
-
-app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="static")
-
 
 SHEET_URL = os.getenv("GOOGLE_SHEET_CSV_URL", "")
 ANALYSIS_CACHE = {}
@@ -317,6 +309,15 @@ async def descargar_feedback(payload: dict):
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
+
+
+@app.get("/")
+def serve_frontend():
+    return FileResponse(os.path.join(frontend_dist, "index.html"))
+
+
+if os.path.isdir(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="static")
 
 
 # cd /c/Users/salom/ExperienciaIACopia/backend

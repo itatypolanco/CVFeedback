@@ -10,7 +10,9 @@ import {
 } from '@heroicons/react/24/outline';
 
 function App() {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8001";
+  const apiBaseUrl =
+    import.meta.env.VITE_API_BASE_URL ??
+    (import.meta.env.DEV ? "http://localhost:8001" : "");
   const [file, setFile] = useState(null);
   const [previewFeedback, setPreviewFeedback] = useState("");
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
